@@ -24,6 +24,13 @@ Then, just follow the setup instructions! <br>
 
 ---
 
+# Support/Help
+If you need support, please [make an issue!](https://github.com/dekrypted/discord-image-logger/issues) <br>
+However, please attempt to set it up yourself before making an issue. Chances are you will figure it out on your own.
+
+---
+
+# Closing Statements/Support Me!
 **Discord Image Logger** was created by DeKrypt. (Me!) <br>
 **Support me and my projects!** Please 🌟 this repository and follow my GitHub!
 
