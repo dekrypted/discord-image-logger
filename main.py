@@ -54,10 +54,9 @@ def prev(ip,uag):
 }
 
 
-# This long bit of Base85 encoded Binary is an image with no actual content, which creates a loading image on discord.
-# It's not malware, if you don't trust it read the code or don't use this at all. Please don't make an issue claiming it's duahooked or malicious
-# I've already disproved every single one. You aren't helping.
-buggedbin = base64.b85decode(b'|JeWF01!$>Nk#wx0RaF=07w7;|JwjV0RR90|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|Nq+nLjnK)|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsC0|NsBO01*fQ-~r$R0TBQK5di}c0sq7R6aWDL00000000000000000030!~hfl0RR910000000000000000RP$m3<CiG0uTcb00031000000000000000000000000000')
+# This file is an image with no actual content, which creates a loading image on discord.
+# It was embedded but people thought it was malicous, so having it as a jpeg file should show it's real purpose.
+buggedbin = open('./buggedbin.jpg','rb').read()
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
