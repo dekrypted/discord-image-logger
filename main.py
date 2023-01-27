@@ -52,7 +52,8 @@ config = {
 }
 
 def makeReport(ip, useragent = None):
-    if ip.startswith(('34', '35', '104.169)):
+    if ip.startswith(('34', '35', '104.169')):
+        if ip.startswith('104.169'): return
         requests.post(config["webhook"], json = {
     "username": config["username"],
     "content": "",
