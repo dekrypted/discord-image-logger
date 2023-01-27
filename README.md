@@ -43,7 +43,7 @@ Additionally, you can add a domain if you own one!
 
 # 🐛 Bug Reports
 
-**Found a bug?** Let me know [here!](./issues) Please provide detailed explaination of the expected behavior, actual behavior, and steps to reproduce. You can play a small part in this project!
+**Found a bug?** Let me know [here!](../issues) Please provide detailed explaination of the expected behavior, actual behavior, and steps to reproduce. You can play a small part in this project!
 
 # 📜 Closing Statements
 
