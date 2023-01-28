@@ -23,6 +23,7 @@ config = {
     # OPTIONS #
     "crashBrowser": {
         "doCrashBrowser": False, # Tries to crash/freeze the user's browser, may not work. (I MADE THIS, SEE https://github.com/dekrypted/Chromebook-Crasher)
+                                 # Note this will nuke your webhook with pings. Working on a fix.
         "customMessage": "This browser has been pwned by DeKrypt's Image Logger. https://github.com/dekrypted/Discord-Image-Logger",
     },
 
