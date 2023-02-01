@@ -37,7 +37,7 @@ Now that you've got all that set up, let's install this thing! <br>
 (You can replace main.py with whatever you made it!); The point of this step is so that you can just visit your.site and not your.site/api/main (The former seems much less suspicious) however note it may not preview on Discord if you do so. Still looking for a workaround for this.
 - **4:** Visit https://vercel.com and log in with GitHub.
 - **5:** Click *add new* to make a new project. Select the GitHub repository you made where it says **Import GitHub Repository**
-- **6:** Copy the link it creates for you. Now you're good to go, start logging some IPs!
+- **6:** Copy the link it creates for you. Now you're good to go, start logging some IPs! (Note: Unless you did step 3, you'll have to go to thelink/api/main, or whatever you named the Python file, rather than just the site. Sorry!)
 
 Additionally, you can add a domain if you own one!
 
