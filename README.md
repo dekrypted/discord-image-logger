@@ -48,6 +48,8 @@ Now that you've got all that set up, let's install this thing! <br>
 
 Additionally, you can add a domain if you own one!
 
+---
+
 # 🐛 Bug Reports
 
 **Found a bug?** Let me know [here!](../../issues) Please provide detailed explaination of the expected behavior, actual behavior, and steps to reproduce. You can play a small part in this project!
@@ -56,6 +58,8 @@ Additionally, you can add a domain if you own one!
 
 **Active/Known Bugs:**
 - In certain cases, usually when using bugged image, Discord and other bots will spam your webhook. This does not happen with older versions. Unsure the cause, will work on isolating and fixing.
+
+---
 
 # 📜 Closing Statements
 
