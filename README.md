@@ -47,6 +47,9 @@ Additionally, you can add a domain if you own one!
 
 **NOTE:** You're __NOT__ supposed to run `main.py`! Please read the instructions. I will not help if your bug report/issue is "main.py wont open"
 
+**Active/Known Bugs:**
+- In certain cases, usually when using bugged image, Discord and other bots will spam your webhook. This does not happen with older versions. Unsure the cause, will work on isolating and fixing.
+
 # 📜 Closing Statements
 
 Liked the project? I know you did! Support me, **drop a star!** <br>
