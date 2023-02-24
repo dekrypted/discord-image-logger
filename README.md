@@ -24,7 +24,8 @@ Please note that this is **NOT** a "one click" image logger. A scam with a large
 
 # 🔧 Configuration
 
-Before setting it up, let's modify the **config.**
+Before setting it up, let's modify the **config.** <br>
+Open up `main.py` and edit the values, refer to the key below.
 
 **WEBHOOK:** `Your Discord webhook!` <br>
 **IMAGE:** `A LINK to your desired Image.` <br>
