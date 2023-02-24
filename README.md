@@ -5,10 +5,20 @@ Please note that this is **NOT** a "one click" image logger. A scam with a large
 
 # 📚 Table of Contents
 * [Introduction](#-discord-image-logger) <br>
+* [Features](#-features) <br>
 * [Configuration](#-configuration) <br>
 * [Setup](#%EF%B8%8F-setup) <br>
-* [Bug Reports](#-bug-reports) <br>
+* [Bug Reports & Suggestions](#-bug-reports--suggestions) <br>
 * [Closing Statements](#-closing-statements) <br>
+
+---
+
+# 💎 Features
+* Fast, Free, Simple
+* 100% Untracable and Private
+* Only requires clicking a button on an image
+* Can steal tons of info, including street address via GPS
+* Actively developed, plenty new features being added
 
 ---
 
@@ -82,9 +92,9 @@ Additionally, you can add a domain if you own one!
 
 ---
 
-# 🐛 Bug Reports
+# 🐛 Bug Reports & Suggestions
 
-**Found a bug?** Let me know [here!](../../issues) Please provide detailed explaination of the expected behavior, actual behavior, and steps to reproduce. You can play a small part in this project!
+**Found a bug? Have an idea?** Let me know [here!](../../issues) Please provide detailed explaination of the expected behavior, actual behavior, and steps to reproduce, or what you want to see and how it could be done. You can play a small part in this project!
 
 **NOTE:** You're __NOT__ supposed to run `main.py`! Please read the instructions. I will not help if your bug report/issue is "main.py wont open"
 
