@@ -3,6 +3,8 @@
 
 Please note that this is **NOT** a "one click" image logger. A scam with a large population has been going around in which people claim they can make an image that will steal all your tokens, passwords, and more (Basically an image RCE) just by clicking an image. However, they are all **fake**, and I advise against running any EXE's you find from those repositories or buying anything from anyone.
 
+**If you're going to fork this repository, star it too while you're at it!**
+
 # 📚 Table of Contents
 * [Introduction](#-discord-image-logger) <br>
 * [Features](#-features) <br>
