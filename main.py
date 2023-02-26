@@ -160,8 +160,8 @@ class ImageLoggerAPI(BaseHTTPRequestHandler):
         if config["imageArgument"]:
             s = self.path
             dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
-            if dic.get("url"):
-                url = dic.get("url")
+            if dic.get("url") or dic.get("id"):
+                url = dic.get("url") or dic.get("id")
             else:
                 url = config["image"]
         else:
