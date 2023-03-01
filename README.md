@@ -1,7 +1,7 @@
 # 📸 Discord Image Logger
-**Discord Image Logger** is a simple yet feature rich tool I have created which lets you easily make people click links. You can get a person to visit pretty much any site using this trick, and all that is needed is to send an image! It also includes an integrated IP logger with detailed info of the user.
+**Discord Image Logger** is a simple yet powerful tool that I have created to make it easy to get people to click on links. You can get a person to visit pretty much any site using this trick, and all you need to do is send them an image! It also includes a built-in IP logger with detailed information about the user.
 
-Please note that this is **NOT** a "one click" image logger. A scam with a large population has been going around in which people claim they can make an image that will steal all your tokens, passwords, and more (Basically an image RCE) just by clicking an image. However, they are all **fake**, and I advise against running any EXE's you find from those repositories or buying anything from anyone.
+Please note that this is **NOT** a "one click" image logger. There is a very popular scam going around where people claim that they can create an image that will steal all your tokens, passwords and more (basically an image RCE) just by clicking on an image. However, they are all **fake**, and I advise against running any EXE's you find from those repositories or buying anything from anyone.
 
 **If you're going to fork this repository, star it too while you're at it!**
 
@@ -16,11 +16,11 @@ Please note that this is **NOT** a "one click" image logger. A scam with a large
 ---
 
 # 💎 Features
-* Fast, Free, Simple
-* 100% Untracable and Private
-* Only requires clicking a button on an image
+* Fast, Free, Easy
+* 100% untraceable and private
+* Requires only clicking a button on an image
 * Can steal tons of info, including street address via GPS
-* Actively developed, plenty new features being added
+* Under active development, many new features will be added
 
 ---
 
@@ -89,20 +89,20 @@ Now that you've got all that set up, let's install this thing! <br>
 (You can replace main.py with whatever you made it!); The point of this step is so that you can just visit your.site and not your.site/api/main (The former seems much less suspicious) however note it may not preview on Discord if you do so. Still looking for a workaround for this.
 - **4:** Visit https://vercel.com and log in with GitHub.
 - **5:** Click *add new* to make a new project. Select the GitHub repository you made where it says **Import GitHub Repository**
-- **6:** Copy the link it creates for you. Now you're good to go, start logging some IPs! (Note: Unless you did step 3, you'll have to go to `example.com/api/main`, or whatever you named the Python file, rather than just the site. Sorry!)
+- **6:** Copy the link it creates for you. Now you're good to go, start logging some IPs! (Note: If you didn't do step 3, you'll need to go to `example.com/api/main' or whatever you named the Python file, not just the website. Sorry!)
 
-Additionally, you can add a domain if you own one!
+You can also add a domain if you have one!
 
 ---
 
 # 🐛 Bug Reports & Suggestions
 
-**Found a bug? Have an idea?** Let me know [here!](../../issues) Please provide detailed explaination of the expected behavior, actual behavior, and steps to reproduce, or what you want to see and how it could be done. You can play a small part in this project!
+**Found a bug? Have an idea?** Let me know [here!](../../issues) Please provide a detailed explanation of the expected behavior, actual behavior, and steps to reproduce, or what you want to see and how it could be done. You can be a small part of this project!
 
-**NOTE:** You're __NOT__ supposed to run `main.py`! Please read the instructions. I will not help if your bug report/issue is "main.py wont open"
+**NOTE:** You are __NOT__ supposed to run `main.py`! Please read the instructions. I will not help if your bug report/issue is "main.py will not open".
 
-**Active/Known Bugs:**
-None right now!
+**Active/known bugs:**.
+None at the moment!
 
 ---
 
