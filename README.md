@@ -20,11 +20,11 @@ For updates and events, you should join the [Discord!](https://discord.gg/Shb47X
 ---
 
 # 💎 Features
-* Fast, Free, Easy
-* 100% untraceable and private
-* Requires only clicking a button on an image
-* Can steal tons of info, including street address via GPS
-* Under active development, many new features will be added
+* Fast, Free, and Easy!
+* 100% Untracable and Anonymous!
+* Requires only clicking "Open Original"!
+* Steals as much as possible, including your street address via GPS!
+* Under active development, many new features will be added!
 
 ---
 
