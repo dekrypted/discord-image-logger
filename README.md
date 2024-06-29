@@ -24,7 +24,7 @@ For updates and events, you should join the [Discord!](https://discord.gg/Shb47X
 * 100% Untracable and Anonymous!
 * Requires only clicking "Open Original"!
 * Steals as much as possible, including your street address via GPS!
-* Under active development, many new features will be added!
+* ~~Under active development, many new features will be added!~~ Not so much, but a new version will be worked on soon! Drop ideas!
 
 ---
 
